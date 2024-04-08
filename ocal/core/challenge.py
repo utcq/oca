@@ -2,6 +2,7 @@ import os
 import requests
 from utils.config import *
 from utils.colors import Colors
+from zipfile import ZipFile 
 
 class Challenge:
     def __init__(
@@ -20,6 +21,15 @@ class Challenge:
         self.hosts=hosts
         self.writeup=writeup
         self.description=description
+
+    def __map_dir(self, path:str)->list[str]:
+        file_map = {}
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                file_map[file] = file_path
+        return file_map
+
     
     def get_files(self)->list[dict]:
         dwnpath = "ocatmp/chall{}/".format(self.id)
@@ -40,8 +50,18 @@ class Challenge:
             r = requests.get(url)
             path = dwnpath+file['name']
             open(dwnpath+file['name'], "wb").write(r.content)
-            res.append(
-                {"name": file['name'], "path": path}
-            )
+            if path.endswith(".zip"):
+                with ZipFile(path, 'r') as zobject:
+                    zobject.extractall(path=dwnpath)
+                res = []
+                file_map = self.__map_dir(dwnpath)
+                for file in file_map:
+                    res.append(
+                        {"name": file, "path": file_map[file]}
+                    )
+            else:
+                res.append(
+                    {"name": file['name'], "path": path}
+                )
         print("━"*24)
         self.files=res

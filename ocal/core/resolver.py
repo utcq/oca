@@ -1,8 +1,10 @@
 from utils.config import *
 from core.challenge import Challenge
 import utils.dumper as dmp
-import os
+import os, sys
 import importlib
+
+sys.path.append(os.getcwd())
 
 class PlResolve():
     def __init__(self, chall: Challenge):

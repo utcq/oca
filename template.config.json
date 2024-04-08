@@ -6,6 +6,6 @@
         "plugins": ["robots", "git"]
     },
     "binary": {
-        "plugins": ["checksec"]
+        "plugins": ["checksec", "rop", "strings", "pwnw"]
     }
 }
