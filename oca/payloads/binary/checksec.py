@@ -1,5 +1,5 @@
-from challenge import Challenge
-from dumper import Colors
+from core.challenge import Challenge
+from utils.colors import Colors
 import os
 
 class Checksec():

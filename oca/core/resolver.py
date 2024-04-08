@@ -1,7 +1,8 @@
-from config import *
-from resolver.dynport import *
-from challenge import Challenge
-import dumper as dmp
+from utils.config import *
+from core.challenge import Challenge
+import utils.dumper as dmp
+import os
+import importlib
 
 class PlResolve():
     def __init__(self, chall: Challenge):
@@ -11,13 +12,15 @@ class PlResolve():
     
     def load_plugins(self):
         for tag in self.challenge.categories:
-            self.plugins = []
+            plugs = []
             try: 
-                self.plugins = CONFIG[tag]["plugins"]
+                if (tag in CONFIG.keys()):
+                    self.plugins += CONFIG[tag]["plugins"]
+                    plugs += CONFIG[tag]["plugins"]
             except: pass
             
-            for plugin in self.plugins:
-                plug = get_plugin(
+            for plugin in plugs:
+                plug = self.get_plugin(
                     "payloads.{}.{}".format(
                         tag, plugin
                     )
@@ -35,3 +38,6 @@ class PlResolve():
                 )
             )
             print("━"*24)
+
+    def get_plugin(self, rel_path:str):
+        return importlib.import_module(rel_path)

@@ -1,4 +1,4 @@
-from challenge import Challenge
+from core.challenge import Challenge
 
 class Git():
     def __init__(self, chall: Challenge):

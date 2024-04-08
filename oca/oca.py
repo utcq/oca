@@ -1,6 +1,6 @@
-import scraper as web
-import dumper as dmp
-import resolver as rslv
+import core.scraper as web
+import utils.dumper as dmp
+import core.resolver as rslv
 import sys
 
 if len(sys.argv) < 2:
@@ -8,9 +8,9 @@ if len(sys.argv) < 2:
     exit(0)
 
 url = sys.argv[1]
-chall = web.get_challenge(url)
+chall = web.Scraper(url).get_challenge()
 dmp.print_chall(chall)
-web.download_files(chall)
+chall.get_files()
 resolver = rslv.PlResolve(chall)
 resolver.load_plugins()
 resolver.run_plugins()
