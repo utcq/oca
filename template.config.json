@@ -1,0 +1,11 @@
+{
+    "token": "TOKEN_HERE",
+    "base": "https://training.olicyber.it/api/challenges/{}",
+    "files": "https://training.olicyber.it/api/file/{}",
+    "web": {
+        "plugins": ["robots", "git"]
+    },
+    "binary": {
+        "plugins": ["checksec"]
+    }
+}
