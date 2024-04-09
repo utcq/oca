@@ -16,15 +16,12 @@ def parse_desc(desc:str)->dict:
         else:
             break
     
-    hindex = 0
-    while True:
-        hindex = desc.find("`", hindex)
-        if hindex >= 0:
-            end=desc.find("`", hindex+1)
-            res["hosts"].append(
-                tuple(desc[hindex+1:][:end][:-1].split('nc ')[1].split(" "))
-            )
-            hindex=end+1
-        else:
-            break
+    regex_pattern = r"nc [a-zA-Z0-9\-_]+(?:\.challs\.olicyber\.it) \d+"
+    matches=re.findall(regex_pattern, desc, re.MULTILINE | re.DOTALL)
+    
+    for match in matches:
+        res["hosts"].append(
+            tuple(match.split("nc ")[1].split(" "))
+        )
+
     return res
