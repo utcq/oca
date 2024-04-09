@@ -20,6 +20,12 @@ class Scraper():
         id = self.url.split("#")[1].split("-")[1]
         r = self.session.get(self.base.format(id), headers=self.headers)
         resp = r.json()
+
+        try:
+            if(resp["code"]=="LOGIN_REQUIRED"):
+                raise EnvironmentError("Invalid Authentication Token")
+        except: pass 
+
         return Challenge(
             name=resp['title'],
             url=self.url,
