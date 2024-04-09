@@ -47,6 +47,8 @@ class Scraper():
         for match in matches:
             if "]" in match:
                 match = match.split("]")[0]
+            if "writeup" in match.lower():
+                continue
             res["urls"].append(
                 match
             )

