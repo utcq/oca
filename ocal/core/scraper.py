@@ -22,20 +22,19 @@ class Scraper():
         resp = r.json()
 
         try:
-            if(resp["code"]=="LOGIN_REQUIRED"):
-                raise EnvironmentError("Invalid Authentication Token")
-        except: pass 
-
-        return Challenge(
-            name=resp['title'],
-            url=self.url,
-            id=id,
-            categories=resp['tags'],
-            score=resp['currentScore'],
-            files=resp['files'],
-            description=resp['description'],
-            **self.parse_desc(resp['description'])
-        )
+            return Challenge(
+                name=resp['title'],
+                url=self.url,
+                id=id,
+                categories=resp['tags'],
+                score=resp['currentScore'],
+                files=resp['files'],
+                description=resp['description'],
+                **self.parse_desc(resp['description'])
+            )
+        except:
+            raise EnvironmentError("Invalid Authentication Token")
+        
     
     def parse_desc(self, desc:str)->dict:
         res = {
