@@ -18,7 +18,6 @@ class Pwninit:
         self.writesolve()
     
     def writesolve(self):
-        path = "ocatmp/chall{}/".format(self.challenge.id)
         binary = None
         linker = None
         libc = None
@@ -35,8 +34,7 @@ class Pwninit:
             print("{}Error{}: no executable found".format(Colors.RED, Colors.END))
         else:
             os.system("cd {}; pwninit --bin {}{}{}".format(
-                path,
-                binary["name"],
+                binary["path"],
                 " --ld {}".format(linker["name"]) if linker!=None else "",
                 " --libc {}".format(libc["name"]) if libc!=None else ""
             ))
