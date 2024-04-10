@@ -1,2 +1,0 @@
-# OCA
-> [Olicyber Analzyer]
