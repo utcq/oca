@@ -22,11 +22,18 @@ class PlResolve():
             except: pass
             
             for plugin in plugs:
-                plug = self.get_plugin(
-                    "payloads.{}.{}".format(
-                        tag, plugin
+                if "." in plugin:
+                    plug = self.get_plugin(
+                        "payloads.{}".format(
+                            plugin
+                        )
                     )
-                )
+                else:
+                    plug = self.get_plugin(
+                        "payloads.{}.{}".format(
+                            tag, plugin
+                        )
+                    )
                 self.modules.append(plug)
                 dmp.print_plugin(plug.__name__)
         print("━"*24)
@@ -36,7 +43,7 @@ class PlResolve():
             dmp.print_plugin_run(mod.__name__)
             exec(
                 "mod.{}(self.challenge)".format(
-                    plug.capitalize()
+                    mod.__name__.split(".")[-1].capitalize()
                 )
             )
             print("━"*24)
