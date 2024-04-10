@@ -33,8 +33,7 @@ class Scraper():
                 **self.parse_desc(resp['description'])
             )
         except:
-            raise EnvironmentError("Invalid Authentication Token")
-        
+            raise EnvironmentError("Invalid Authentication Token")        
     
     def parse_desc(self, desc:str)->dict:
         res = {

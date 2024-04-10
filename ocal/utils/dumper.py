@@ -29,7 +29,7 @@ def print_chall(chall: Challenge)->None:
     print(Colors.BOLD + Colors.CYAN + "━" * 50 + Colors.END)
     print("\t{}Name:  {}{} [{}]{}".format(Colors.CYAN, Colors.GREEN, chall.name, chall.id, Colors.END))
     print("\t{}Score: {}{} {}".format(Colors.CYAN, Colors.GREEN, chall.score, Colors.END))
-    print("\t{}Tags:  {}{} {}".format(Colors.CYAN, Colors.GREEN, ', '.join(chall.categories).capitalize(), Colors.END))
+    print("\t{}Tags:  {}{} {}".format(Colors.CYAN, Colors.GREEN, ', '.join(chall.categories), Colors.END))
     print("\t{}URLs:  {}{} {}".format(Colors.CYAN, Colors.GREEN, '\n\t       '.join(chall.urls), Colors.END))
     print("\t{}Hosts: {}{} {}".format(Colors.CYAN, Colors.GREEN, '\n\t       '.join(' '.join(tup) for tup in chall.hosts), Colors.END))
     print(newdesc)

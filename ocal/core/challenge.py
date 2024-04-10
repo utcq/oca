@@ -29,6 +29,18 @@ class Challenge:
                 file_path = os.path.join(root, file)
                 file_map[file] = file_path
         return file_map
+    
+    def resolve_tags(self):
+        if "aliases" in CONFIG.keys():
+            newtags = []
+            for tag in self.categories:
+                found = False
+                for base_tag in CONFIG["aliases"]:
+                    if tag in CONFIG["aliases"][base_tag] and base_tag not in newtags:
+                        newtags.append(base_tag)
+                if not found:
+                    newtags.append(tag)
+            self.categories = newtags
 
     
     def get_files(self)->list[dict]:
@@ -39,9 +51,7 @@ class Challenge:
         try:
             os.mkdir(dwnpath)
         except: pass
-
         res = []
-        
         for file in self.files:
             url = CONFIG['files'].format(
                 file['url'].replace("/api/file/", "")
@@ -51,6 +61,7 @@ class Challenge:
             path = dwnpath+file['name']
             open(dwnpath+file['name'], "wb").write(r.content)
             if path.endswith(".zip"):
+                print("{}[ARCHIVE] {}Uncompressing {}{}{}".format(Colors.CYAN, Colors.RED, Colors.CYAN, file['name'], Colors.END))
                 with ZipFile(path, 'r') as zobject:
                     zobject.extractall(path=dwnpath)
                 res = []

@@ -9,6 +9,7 @@ if len(sys.argv) < 2:
 
 url = sys.argv[1]
 chall = web.Scraper(url).get_challenge()
+chall.resolve_tags()
 dmp.print_chall(chall)
 chall.get_files()
 resolver = rslv.PlResolve(chall)

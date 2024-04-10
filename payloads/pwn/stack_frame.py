@@ -1,6 +1,5 @@
-from elftools.elf.elffile import ELFFile
-from elftools.elf.sections import SymbolTableSection
-import struct
+import os
+
 
 from core.challenge import Challenge
 from utils.colors import Colors
