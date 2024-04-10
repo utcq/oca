@@ -5,6 +5,9 @@
     "web": {
         "plugins": ["robots", "git"]
     },
+    "network": {
+        "plugins": ["api_finder"]
+    },
     "binary": {
         "plugins": ["pwninit", "pwn.format_dump"]
     },
