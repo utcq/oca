@@ -41,7 +41,7 @@ class Format_dump():
             self.process =pwn.process(self.file['path'])
             self.process.recvlines(self.flines)
             payload = '^%{}$p;'.format(i).encode('ascii')
-            self.process.sendline(payload);
+            self.process.sendline(payload)
             r = self.process.recvlines(self.elines)
             for rec in r:
                 if rec.decode().count(';') > 0:
@@ -55,7 +55,7 @@ class Format_dump():
     def check(self, file:str):
         r = self.process.recvlines(timeout=1)
         self.flines = len(r)
-        self.process.sendline(r"%f".encode('ascii'));
+        self.process.sendline(r"%f".encode('ascii'))
         try:
             r = self.process.recvlines(timeout=1)
         except:

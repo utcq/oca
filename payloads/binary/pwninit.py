@@ -33,32 +33,32 @@ class Pwninit:
         if "executable" not in r.read():
             print("{}Error{}: no executable found".format(Colors.RED, Colors.END))
         else:
-            try: os.remove("ocatmp/chall{}/solve.py".format(self.challenge.id))
+            try: os.remove("{}solve.py".format(self.challenge.path))
             except: pass
             r = os.popen("cd {}; pwninit --bin {}{}{}".format(
-                "ocatmp/chall{}/".format(self.challenge.id),
-                binary["path"].replace("ocatmp/chall{}/".format(self.challenge.id), ""),
+                self.challenge.path,
+                binary["path"].replace(self.challenge.path, ""),
                 " --ld {}".format(linker["name"]) if linker!=None else "",
                 " --libc {}".format(libc["name"]) if libc!=None else ""
             )).read()
             os.system("mv {} {}".format(binary["path"]+"_patched", binary["path"]))
             print(r)
             
-            filez = open("ocatmp/chall{}/solve.py".format(self.challenge.id), "rb")
+            filez = open("{}solve.py".format(self.challenge.path), "rb")
             cont = filez.read().decode().replace(
-                binary["path"].replace("ocatmp/chall{}/".format(self.challenge.id), "")+"_patched",
+                binary["path"].replace(self.challenge.path, "")+"_patched",
                 binary["path"]
             )
             if len(self.challenge.hosts):
                 cont = cont.replace('("addr", 1337)',
                      '("{}", {})'.format(*self.challenge.hosts[0])
                     )
-            file = open("ocatmp/chall{}/solve.py".format(self.challenge.id), "w")
+            file = open("{}solve.py".format(self.challenge.path), "w")
             file.write(cont)
 
             file.close()
             sys.stdout.flush()
-            print("Run solve with './{} LOCAL'".format("ocatmp/chall{}/solve.py".format(self.challenge.id)))
+            print("Run solve with './{} LOCAL'".format("{}solve.py".format(self.challenge.path)))
 
 
         
