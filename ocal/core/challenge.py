@@ -21,6 +21,7 @@ class Challenge:
         self.hosts=hosts
         self.writeup=writeup
         self.description=description
+        self.path=""
 
     def __map_dir(self, path:str)->list[str]:
         file_map = {}
@@ -44,12 +45,12 @@ class Challenge:
 
     
     def get_files(self)->list[dict]:
-        dwnpath = "ocatmp/chall{}/".format(self.id)
+        self.path = "ocatmp/chall{}/".format(self.id)
         try: 
             os.mkdir("ocatmp")
         except: pass
         try:
-            os.mkdir(dwnpath)
+            os.mkdir(self.path)
         except: pass
         res = []
         for file in self.files:
@@ -58,14 +59,14 @@ class Challenge:
             )
             print("{}[FILE] {}Downloading {}{}{}".format(Colors.CYAN, Colors.RED, Colors.CYAN, file['name'], Colors.END))
             r = requests.get(url)
-            path = dwnpath+file['name']
-            open(dwnpath+file['name'], "wb").write(r.content)
+            path = self.path+file['name']
+            open(self.path+file['name'], "wb").write(r.content)
             if path.endswith(".zip"):
                 print("{}[ARCHIVE] {}Uncompressing {}{}{}".format(Colors.CYAN, Colors.RED, Colors.CYAN, file['name'], Colors.END))
                 with ZipFile(path, 'r') as zobject:
-                    zobject.extractall(path=dwnpath)
+                    zobject.extractall(path=self.path)
                 res = []
-                file_map = self.__map_dir(dwnpath)
+                file_map = self.__map_dir(self.path)
                 for file in file_map:
                     res.append(
                         {"name": file, "path": file_map[file]}
